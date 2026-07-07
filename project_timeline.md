@@ -6,12 +6,12 @@ This timeline turns the Digital Twin system instructions into an implementation 
 
 ## Current Status
 
-- Phase 0: Not started. Tooling, packaging, and test runner decisions still need to be made.
+- Phase 0: Complete. Packaging, dependency policy, local setup instructions, ignore rules, and the first test command are in place.
 - Phase 1: Mostly complete. MVP scope, workflow, object types, storage path, and retrieval rules are documented in `README.md` and `src/digital_twin/schemas/objects.py`.
 - Phase 1 implementation note: schema constants exist, but runtime object validation still needs to be built in Phase 2.
 - Phase 2: Not started. Core modules are currently placeholders in `extraction/text.py`, `storage/json_store.py`, `retrieval/search.py`, and `cli/main.py`.
 - Current implementation state: scaffolded package layout exists, but the save/search memory loop is not implemented.
-- README reflects the current pre-Phase-0 setup: key decisions are documented, but packaging and tests are not wired yet.
+- README reflects the current Phase 0 setup: editable install, `unittest`, syntax checks, and dependency policy are documented.
 - MVP is functionally complete after Phase 2 when the plain-text save/search loop works and is tested. MVP is release-ready after Phase 6 hardening.
 
 ## Phase Map
@@ -46,7 +46,10 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 | Extraction strategy       | Start rule-based for MVP plain text; consider LLM-assisted extraction later                                                       | Decided                           |
 | Tag generation location   | Put reusable tag generation in `src/digital_twin/tagging/generate.py`; keep normalization in `normalize.py`                       | Decided                           |
 | CLI framework             | Use standard-library `argparse` for the MVP                                                                                       | Decided                           |
-| Test runner               | Use standard-library `unittest` until a dependency manager is added                                                               | Decided                           |
+| Packaging                 | Use `pyproject.toml` with a `src/` package layout                                                                                 | Decided                           |
+| Dependency management     | Keep Phase 0 dependency-free; add third-party dependencies to `pyproject.toml` only when a feature requires them                  | Decided                           |
+| Test runner               | Use standard-library `unittest` with `python3 -m unittest discover -s tests`                                                       | Decided                           |
+| CI                        | Defer CI until the first implementation-heavy phase; planned checks are syntax compilation and `unittest`                         | Deferred                          |
 
 
 
@@ -124,18 +127,18 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 
 **Deliverables:**
 
-- Python packaging file such as `pyproject.toml`
-- Chosen test runner and documented test command
-- Local development setup instructions
-- Dependency management decision
-- Optional CI plan for lint and tests
+- Done: Python packaging file at `pyproject.toml`
+- Done: chosen test runner and documented test command
+- Done: local development setup instructions
+- Done: dependency management decision
+- Done: optional CI plan for lint and tests is documented as deferred
 
 **Acceptance criteria:**
 
-- The package can be imported from a clean local setup
-- The documented test command runs, even if the first test suite is small
-- Generated Python artifacts are ignored
-- README no longer says tests are not wired once the runner is selected
+- Done: the package can be imported from a clean local setup after `python3 -m pip install -e .`
+- Done: the documented test command runs with the initial smoke test
+- Done: generated Python artifacts are ignored
+- Done: README no longer says tests are not wired
 
 **Primary files:**
 
@@ -146,10 +149,10 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 
 **Exit criteria:**
 
-- A new contributor can install or run the package using documented commands
-- Test infrastructure exists before implementation-heavy phases
-- Generated artifacts are ignored before test or compile commands are run
-- CI is either configured or explicitly deferred
+- Done: a new contributor can install or run the package using documented commands
+- Done: test infrastructure exists before implementation-heavy phases
+- Done: generated artifacts are ignored before test or compile commands are run
+- Done: CI is explicitly deferred with planned checks
 
 **Example data:**
 
@@ -159,24 +162,24 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 
 **Repo and tooling implementation order:**
 
-- [ ] Choose packaging approach
+- [x] Choose packaging approach
   - Add `pyproject.toml`
   - Confirm package import path
   - Document install command
-- [ ] Implement `unittest` per the Decision Log
+- [x] Implement `unittest` per the Decision Log
   - Use standard-library `unittest`
   - Add an initial smoke test
   - Update `README.md` with the test command
-- [ ] Confirm generated-file policy
+- [x] Confirm generated-file policy
   - Keep `__pycache__/` ignored
   - Keep the empty `data/objects/memory.json` seed tracked
   - Do not commit real personal memory
   - Keep fixtures separate from personal data
-- [ ] Confirm seed data path
+- [x] Confirm seed data path
   - Ensure `data/objects/` exists for local storage
   - Keep an empty tracked `memory.json` seed file
   - If real user memory will be saved locally, create an ignored local-data path before storing personal data
-- [ ] Decide CI scope
+- [x] Decide CI scope
   - Decide whether to add GitHub Actions now or defer it
   - If added, run syntax checks and tests on push
 

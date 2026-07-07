@@ -90,7 +90,10 @@ Implementation decisions:
 - Runtime validation will live in `src/digital_twin/schemas/validate.py`.
 - Reusable tag generation will live in `src/digital_twin/tagging/generate.py`.
 - The MVP CLI will use standard-library `argparse`.
+- Packaging is defined in `pyproject.toml` with a `src/` package layout.
+- The project has no runtime dependencies for Phase 0.
 - The initial test runner is standard-library `unittest`.
+- CI is deferred until the first implementation-heavy phase; the planned CI checks are syntax compilation and the `unittest` suite.
 
 Each first-release object type has a schema in `src/digital_twin/schemas/objects.py`.
 
@@ -132,7 +135,26 @@ Run commands from the repository root:
 cd /Users/satyasrujanapilli/digital-twin
 ```
 
-Check Python syntax for the scaffolded package:
+Create and activate a local virtual environment:
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install the package in editable mode:
+
+```sh
+python3 -m pip install -e .
+```
+
+Run the test suite:
+
+```sh
+python3 -m unittest discover -s tests
+```
+
+Check Python syntax:
 
 ```sh
 python3 -m compileall src
@@ -150,8 +172,8 @@ List project files:
 find . -maxdepth 4 -type f -not -path "./.git/*" | sort
 ```
 
-Run tests after Phase 0 wires the first test suite:
+Dependency management decision:
 
-```sh
-python3 -m unittest discover -s tests
-```
+- Use `pyproject.toml` as the packaging source of truth.
+- Keep Phase 0 dependency-free with standard-library modules only.
+- Add third-party dependencies only when a feature needs them, then record them in `pyproject.toml`.
