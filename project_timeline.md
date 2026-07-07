@@ -10,17 +10,17 @@ This timeline turns the Digital Twin system instructions into an implementation 
 
 **Deliverables:**
 
-- Confirm the core workflow: `Save -> Extract -> Tag -> Structure -> Store -> Retrieve`
-- Finalize supported object types for the first release
-- Define required fields for every object type
-- Decide where memory objects are stored
-- Define how saved objects are cited during retrieval
+- Confirmed core workflow: `Save -> Extract -> Tag -> Structure -> Store -> Retrieve`
+- Finalized supported object types for the first release: `restaurant`, `recipe`, and `skincare`
+- Defined required fields for every object type: `id`, `title`, `type`, `source`, `created_at`, `updated_at`, `tags`, `notes`, and `metadata`
+- Decided where memory objects are stored: `data/objects/memory.json`
+- Defined how saved objects are cited during retrieval: cite by `title`, `type`, and `id`
 
 **Acceptance criteria:**
 
-- The MVP scope is documented
-- Each supported object type has a schema
-- Retrieval rules clearly prioritize saved memory over web search
+- Done: the MVP scope is documented in `README.md`
+- Done: each supported object type has a schema in `src/digital_twin/schemas/objects.py`
+- Done: retrieval rules clearly prioritize saved memory over web search
 
 ## Phase 2: Object Model And Storage
 
@@ -166,15 +166,6 @@ This timeline turns the Digital Twin system instructions into an implementation 
 - Web search only happens after explicit user request
 
 ## GitHub Issue Sprint Checklist
-
-### Sprint 1: MVP Scope And Project Setup
-
-- [ ] Confirm MVP scope: text save, extraction, tagging, local storage, and memory-first retrieval
-- [ ] Choose initial object types: `restaurant`, `recipe`, and `skincare`
-- [ ] Create project structure for schemas, storage, extraction, tagging, retrieval, CLI, data, and tests
-- [ ] Add initial `data/objects/memory.json` storage file
-- [ ] Document local development commands in the README
-- [ ] Define done criteria for the MVP memory loop
 
 ### Sprint 2: Schemas And Local Storage
 
