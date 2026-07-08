@@ -92,8 +92,10 @@ Implementation decisions:
 - The MVP CLI will use standard-library `argparse`.
 - Packaging is defined in `pyproject.toml` with a `src/` package layout.
 - The project has no runtime dependencies for Phase 0.
+- Development tools are installed with the `dev` optional dependency group.
+- The initial linter is `ruff`.
 - The initial test runner is standard-library `unittest`.
-- CI is deferred until the first implementation-heavy phase; the planned CI checks are syntax compilation and the `unittest` suite.
+- CI is deferred until the first implementation-heavy phase; the planned CI checks are lint, syntax compilation, and the `unittest` suite.
 
 Each first-release object type has a schema in `src/digital_twin/schemas/objects.py`.
 
@@ -148,6 +150,18 @@ Install the package in editable mode:
 python3 -m pip install -e .
 ```
 
+Install development tools:
+
+```sh
+python3 -m pip install -e ".[dev]"
+```
+
+Run the linter:
+
+```sh
+python3 -m ruff check src tests
+```
+
 Run the test suite:
 
 ```sh
@@ -175,5 +189,6 @@ find . -maxdepth 4 -type f -not -path "./.git/*" | sort
 Dependency management decision:
 
 - Use `pyproject.toml` as the packaging source of truth.
-- Keep Phase 0 dependency-free with standard-library modules only.
-- Add third-party dependencies only when a feature needs them, then record them in `pyproject.toml`.
+- Keep runtime dependencies empty until a feature needs one.
+- Put local development tools in the `dev` optional dependency group.
+- Add third-party dependencies only when a feature needs them, then record runtime dependencies in `project.dependencies` or development-only dependencies in `project.optional-dependencies.dev`.

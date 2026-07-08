@@ -10,5 +10,15 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+dev = ["ruff>=0.5.0"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

@@ -2,16 +2,16 @@
 
 This timeline turns the Digital Twin system instructions into an implementation plan. It is organized as relative phases so the schedule can be started from any date.
 
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 ## Current Status
 
-- Phase 0: Complete. Packaging, dependency policy, local setup instructions, ignore rules, and the first test command are in place.
+- Phase 0: Complete. Packaging, dependency policy, local setup instructions, linting, ignore rules, and the first test command are in place.
 - Phase 1: Mostly complete. MVP scope, workflow, object types, storage path, and retrieval rules are documented in `README.md` and `src/digital_twin/schemas/objects.py`.
 - Phase 1 implementation note: schema constants exist, but runtime object validation still needs to be built in Phase 2.
 - Phase 2: Not started. Core modules are currently placeholders in `extraction/text.py`, `storage/json_store.py`, `retrieval/search.py`, and `cli/main.py`.
 - Current implementation state: scaffolded package layout exists, but the save/search memory loop is not implemented.
-- README reflects the current Phase 0 setup: editable install, `unittest`, syntax checks, and dependency policy are documented.
+- README reflects the current Phase 0 setup: editable install, `ruff`, `unittest`, syntax checks, and dependency policy are documented.
 - MVP is functionally complete after Phase 2 when the plain-text save/search loop works and is tested. MVP is release-ready after Phase 6 hardening.
 
 ## Phase Map
@@ -47,9 +47,10 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 | Tag generation location   | Put reusable tag generation in `src/digital_twin/tagging/generate.py`; keep normalization in `normalize.py`                       | Decided                           |
 | CLI framework             | Use standard-library `argparse` for the MVP                                                                                       | Decided                           |
 | Packaging                 | Use `pyproject.toml` with a `src/` package layout                                                                                 | Decided                           |
-| Dependency management     | Keep Phase 0 dependency-free; add third-party dependencies to `pyproject.toml` only when a feature requires them                  | Decided                           |
+| Dependency management     | Keep runtime dependencies empty until needed; install development tools through the `dev` optional dependency group               | Decided                           |
+| Linter                    | Use `ruff` with `python3 -m ruff check src tests`                                                                                | Decided                           |
 | Test runner               | Use standard-library `unittest` with `python3 -m unittest discover -s tests`                                                       | Decided                           |
-| CI                        | Defer CI until the first implementation-heavy phase; planned checks are syntax compilation and `unittest`                         | Deferred                          |
+| CI                        | Defer CI until the first implementation-heavy phase; planned checks are `ruff`, syntax compilation, and `unittest`                | Deferred                          |
 
 
 
@@ -129,6 +130,7 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 
 - Done: Python packaging file at `pyproject.toml`
 - Done: chosen test runner and documented test command
+- Done: chosen linter and documented lint command
 - Done: local development setup instructions
 - Done: dependency management decision
 - Done: optional CI plan for lint and tests is documented as deferred
@@ -136,6 +138,7 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 **Acceptance criteria:**
 
 - Done: the package can be imported from a clean local setup after `python3 -m pip install -e .`
+- Done: the documented lint command runs
 - Done: the documented test command runs with the initial smoke test
 - Done: generated Python artifacts are ignored
 - Done: README no longer says tests are not wired
@@ -157,6 +160,7 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
 **Example data:**
 
 - Test command example: `python3 -m unittest discover -s tests`
+- Lint command example: `python3 -m ruff check src tests`
 - Import check example: `python3 -c "import digital_twin"`
 - Syntax check example: `python3 -m compileall src`
 
@@ -170,6 +174,10 @@ packaging -> test runner -> schemas -> validation -> storage -> tagging -> extra
   - Use standard-library `unittest`
   - Add an initial smoke test
   - Update `README.md` with the test command
+- [x] Implement `ruff` linting
+  - Add `ruff` to the `dev` optional dependency group
+  - Configure lint settings in `pyproject.toml`
+  - Update `README.md` with the lint command
 - [x] Confirm generated-file policy
   - Keep `__pycache__/` ignored
   - Keep the empty `data/objects/memory.json` seed tracked
